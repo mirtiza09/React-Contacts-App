@@ -8,10 +8,10 @@ module.exports = (sequelize, Sequelize) => {
         type: {
             type: Sequelize.ENUM('Mobile', 'Work', 'Home', 'Main', 'Work fax', 'Home fax', 'Pager', 'Other', 'MVPN', 'Custom'),
             allowNull: false,
-        }
+        },
         number: {
             type: Sequelize.INTEGER,
-            allowNULL: false,
+            allowNull: false,
         }
     });
   
