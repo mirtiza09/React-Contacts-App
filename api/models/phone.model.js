@@ -5,7 +5,14 @@ module.exports = (sequelize, Sequelize) => {
             autoIncrement: true,
             primaryKey: true,
         },
-        // DEFINE YOUR MODEL HERE
+        type: {
+            type: Sequelize.ENUM('Mobile', 'Work', 'Home', 'Main', 'Work fax', 'Home fax', 'Pager', 'Other', 'MVPN', 'Custom'),
+            allowNull: false,
+        }
+        number: {
+            type: Sequelize.INTEGER,
+            allowNULL: false,
+        }
     });
   
     return Phone;
