@@ -128,85 +128,123 @@ function App() {
     };
 
 
+ 
     return (
-        <div>
-            <h1>Contactor</h1>
-            
-            <div className="contact-input-section">
-                <input type="text" placeholder="Enter a contact name" />
-                <button onClick={() => addContact(document.querySelector('input').value)}>Create Contact</button>
-            </div>
-            
-            <div className="contacts-list">
-                {contacts.map(contact => (
-                    <div key={contact.id} className="contact-item">
-                        <div className="contact-header">
-                            <span onClick={() => toggleViewContact(contact.id)} style={{ cursor: 'pointer' }}>
-                                {contact.name}
-                            </span>
-                            <button onClick={() => deleteContact(contact.id)}>Delete</button>
-                        </div>
-                        
-                        {currentContact === contact.id && (
-                            <div className="contact-detail">
-                                <div className="phone-input-section">
-                                    <input type="text" placeholder="Phone Number" id={`phone-input-${contact.id}`} />
-                                    <select id={`phone-type-${contact.id}`}>
-                                        <option value="Mobile">Mobile</option>
-                                        <option value="Work">Work</option>
-                                        <option value="Home">Home</option>
-                                        <option value="Main">Main</option>
-                                        <option value="Work fax">Work fax</option>
-                                        <option value="Home fax">Home fax</option>
-                                        <option value="Pager">Pager</option>
-                                        <option value="Other">Other</option>
-                                        <option value="MVPN">MVPN</option>
-                                        <option value="Custom">Custom</option>
-                                    </select>
-                                    <button onClick={() => {
-                                        const number = document.querySelector(`#phone-input-${contact.id}`).value;
-                                        const type = document.querySelector(`#phone-type-${contact.id}`).value;
-                                        addPhoneNumber(contact.id, type, number);
-                                    }}>Add</button>
-                                </div>
-                                <div className="phone-list">
-                                    {phoneNumbers.map(phone => (
-                                        <div key={phone.id} className="phone-item">
-                                            {phone.type}: {phone.number}
-                                            <button onClick={() => deletePhoneNumber(contact.id, phone.id)}>Delete</button>
-                                        </div>
-                                    ))}
-                                </div>
+        <div className="min-h-screen bg-gradient-to-r from-purple-400 to-pink-500 flex items-center justify-center backdrop-blur-md">
+            <div className="p-10 rounded-xl bg-white w-4/5 max-w-xl shadow-xl bg-opacity-90">
+                <h1 className="text-3xl mb-5 text-center font-bold font-poppins">Contactor</h1>
+                
+                <div className="contact-input-section mb-5 flex justify-between font-poppins">
+                    <input 
+                        className="w-2/3 flex-grow mr-2 p-2 rounded border-3 border-gray-300" 
+                        type="text" 
+                        placeholder="Enter a Contact Name" 
+                    />
+                    <button 
+                        className="w-1/3 p-2 rounded bg-gray-200 text-black hover:bg-gray-300 transition" 
+                        onClick={() => addContact(document.querySelector('input').value)}
+                    >
+                        Create Contact
+                    </button>
+                </div>
+                
+                <div className="contacts-list font-poppins">
+                    {contacts.map(contact => (
+                        <div key={contact.id} className="contact-item mb-4 border-2 p-4 rounded shadow bg-gray-100 cursor-pointer" onClick={() => toggleViewContact(contact.id)}>
+                            <div className="contact-header flex justify-between items-center">
+                                <span className="font-medium">
+                                    {contact.name}
+                                </span>
+                                <button 
+                                    className="bg-red-400 text-white rounded p-2 hover:bg-red-500 transition" 
+                                    onClick={(e) => {
+                                        e.stopPropagation(); // Prevent the box click event
+                                        deleteContact(contact.id);
+                                    }}
+                                >
+                                    Delete
+                                </button>
                             </div>
-                        )}
-                    </div>
-                ))}
-            </div>
+                            
+                            {currentContact === contact.id && (
+                                <div className="contact-detail mt-4" onClick={(e) => e.stopPropagation()}>
+                                    <div className="phone-input-section flex justify-between items-center mb-4">
+                                        <input 
+                                            className="flex-grow mr-2 p-2 rounded border-2" 
+                                            type="text" 
+                                            placeholder="Phone Number" 
+                                            id={`phone-input-${contact.id}`} 
+                                        />
+                                        <select 
+                                            className="w-1/3 mr-2 p-2 rounded border-2" 
+                                            id={`phone-type-${contact.id}`}
+                                        >
+                                            
+                                            {["Mobile", "Work", "Home", "Main", "Work fax", "Home fax", "Pager", "Other", "MVPN", "Custom"].map(type => (
+                                                <option key={type} value={type}>{type}</option>
+                                            ))}
+                                        </select>
+                                        <button 
+                                            className="w-1/4 bg-gray-200 text-black rounded p-2 hover:bg-gray-300 transition" 
+                                            onClick={() => {
+                                                const number = document.querySelector(`#phone-input-${contact.id}`).value;
+                                                const type = document.querySelector(`#phone-type-${contact.id}`).value;
+                                                addPhoneNumber(contact.id, type, number);
+                                            }}
+                                        >
+                                            Add
+                                        </button>
+                                    </div>
+                                    <div className="phone-list">
+                                        {phoneNumbers.map(phone => (
+                                            <div key={phone.id} className="phone-item mb-2 flex justify-between">
+                                                <span>{phone.type}: {phone.number}</span>
+                                                <button 
+                                                    className="bg-red-400 text-white text-sm rounded p-1 hover:bg-red-500 transition" 
+                                                    onClick={() => deletePhoneNumber(contact.id, phone.id)}
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                        </div>
+                    ))}
+                </div>
+                
+                <div className="stats-section mt-5 font-poppins">
+                    <button 
+                        className="p-2 rounded bg-gray-200 text-black hover:bg-gray-300 transition w-full" 
+                        onClick={() => {
+                            fetchStats();
+                            setShowStats(!showStats);
+                        }}
+                    >
+                        {showStats ? "Hide Statistics" : "Show Statistics"}
+                    </button>
             
-            <div className="stats-section">
-                <button onClick={() => {
-                    fetchStats(); // Fetch stats when clicked.
-                    setShowStats(!showStats); // Toggle visibility.
-                }}>
-                    {showStats ? "Hide Stats" : "Show Stats"}
-                </button>
-        
-                {showStats && stats && (
-                    <div className="stats-container">
-                        <h2>Statistics</h2>
-                        <ul>
-                            <li>Number of Contacts: {stats.contactsCount}</li>
-                            <li>Number of Phones: {stats.phonesCount}</li>
-                            <li>Newest Contact Timestamp: {stats.newestContactTimestamp}</li>
-                            <li>Oldest Contact Timestamp: {stats.oldestContactTimestamp}</li>
-                        </ul>
-                        <button onClick={fetchStats}>Refresh</button>
-                    </div>
-                )}
+                    {showStats && stats && (
+                        <div className="stats-container mb-4 border-2 p-4 rounded shadow bg-gray-100">
+                            <h2 className="text-2xl mb-4 font-bold">Statistics</h2>
+                            <ul>
+                                <li>Number of Contacts: {stats.numberOfContacts}</li>
+                                <li>Number of Phones: {stats.numberOfPhones}</li>
+                                <li>Newest Contact Timestamp: {stats.newestContactTimestamp}</li>
+                                <li>Oldest Contact Timestamp: {stats.oldestContactTimestamp}</li>
+                            </ul>
+                            <br />
+                            <button 
+                            className="p-2 rounded bg-gray-200 text-black hover:bg-gray-300 transition w-full" 
+                            onClick={fetchStats}>Refresh</button>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );
-    
-                }
-    export default App;
-    
+}
+
+export default App;
