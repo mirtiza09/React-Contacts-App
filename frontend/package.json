@@ -34,5 +34,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "tailwindcss": "^2.2.16",
+    "autoprefixer": "^10.4.2"
   }
 }

@@ -7,7 +7,7 @@ exports.create = (req, res) => {
     const phone = {
         type: req.body.type,
         number: req.body.number,
-        contactId: req.body.contactId
+        contactId: req.params.contactId
     };
     
     Phones.create(phone)
