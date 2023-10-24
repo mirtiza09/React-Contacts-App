@@ -1,11 +1,9 @@
 
 
----
-
 # Contactor: React Contacts App
 
 ![Contactor screenshot](./Contactor.jpg)  
-*Add a screenshot of your app by replacing `path_to_screenshot_here.png` with the actual path*
+
 
 ## Overview
 
